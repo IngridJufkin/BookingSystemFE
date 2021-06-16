@@ -2,52 +2,40 @@
   <div class="bg-white shadow rounded px-3 pt-3 pb-5 border border-white">
     <div class="row">
       <div class="col">
-        <h1>{{ msg }}</h1>
-
         <div class="hello">
-         
-          <select v-model="form.name" multiple class="form-control">
+          <select v-model="name" multiple class="form-control">
             <option disabled selected value="">Please select a service</option>
-            <option v-for="existingUserName in existingUserNames" :value="existingUserName" :key="existingUserName.serviceName">
+            <option
+              v-for="existingUserName in existingUserNames"
+              v-bind:serviceName="existingUserName.serviceName"
+              :key="existingUserName.serviceName"
+            >
               {{ existingUserName.serviceName }}
             </option>
           </select>
-
-          <datepicker
-            :inline="true"
-            class="block text-sm font-medium text-gray-700 p-1"
-            placeholder="Select Date"
-            v-model="form.date"
-          ></datepicker>
         </div>
       </div>
     </div>
+    <span>{{ name }}</span>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import Datepicker from "vuejs-datepicker";
+//import Datepicker from "vuejs-datepicker";
+//import DatePicker from "@/components/DatePicer.vue"
+//import DatePicker from './DatePicker.vue';
 
 export default {
   name: "HelloWorld",
-  props: {
-    msg: String,
-  },
 
   data() {
     return {
       apiURL: process.env.VUE_APP_BACKEND_URL,
-      form: {
-        name: "",
-        date: new Date,
-      },
+      name: [],
+      //date: new Date,
       existingUserNames: [],
     };
-  },
-
-  components: {
-    Datepicker,
   },
 
   beforeMount() {
@@ -56,12 +44,15 @@ export default {
 
   methods: {
     async getAllServices() {
+      //let newName = this.existingUserName.serviceName;
       const getAll = await axios({
         url: `${this.apiURL}api/serviceName`,
         method: "GET",
       });
       this.existingUserNames = getAll.data.allNames;
+      //this.$emit('helloWorld', {serviceName: newName})
     },
+    
   },
 };
 </script>
@@ -88,8 +79,9 @@ a {
   border-radius: 0;
 }
 .hello {
-  margin: 40px;
+  margin: 0px;
   justify-content: center;
   display: flex;
+  height: 282px;
 }
 </style>
