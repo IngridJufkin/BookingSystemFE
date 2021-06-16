@@ -1,37 +1,44 @@
 <template>
   <div class="bg-white shadow rounded px-3 pt-3 pb-5 border border-white">
-        <div class="hello">
-          <datepicker
-            :inline="true"
-            class="block text-sm font-medium text-gray-700 p-1"
-            placeholder="Select Date"
-            v-model="form.date"
-          ></datepicker>
-        </div>
-
-     <!-- <span>{{ form.date }}</span> -->
+    <div class="hello">
+      <datepicker
+        @input="$store.commit('setDate', date)"
+        :inline="true"
+        class="block text-sm font-medium text-gray-700 p-1"
+        placeholder="Select Date"
+        v-model="date"
+      ></datepicker>
+    </div>
+    <span>DATE :{{ moment(date).format("DD.MM.YYYY") }}</span><br>
+    <span>STORE : {{ moment(serviceDate).format("DD.MM.YYYY") }}</span>
   </div>
 </template>
 
 <script>
-
 import Datepicker from "vuejs-datepicker";
+import { mapState } from "vuex";
+import moment from "moment";
 
 export default {
-
   data() {
     return {
-      form: {
-        date: new Date,
-      },
+      date: new Date(),
     };
   },
 
+  computed: mapState({
+    serviceDate: (state) => state.date,
+    nameAlias: "date",
+  }),
+
   components: {
-    Datepicker
+    Datepicker,
   },
 
-  };
+  methods: {
+    moment,
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

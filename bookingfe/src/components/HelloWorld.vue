@@ -1,59 +1,73 @@
 <template>
   <div class="bg-white shadow rounded px-3 pt-3 pb-5 border border-white">
     <div class="row">
-      <div class="col">
-        <div class="hello">
-          <select v-model="name" multiple class="form-control">
-            <option disabled selected value="">Please select a service</option>
-            <option
-              v-for="existingUserName in existingUserNames"
-              v-bind:serviceName="existingUserName.serviceName"
-              :key="existingUserName.serviceName"
-            >
-              {{ existingUserName.serviceName }}
-            </option>
-          </select>
-        </div>
+   
+
+      <div class="hello">
+        <select v-model="serviceName" class="form-control" @change="getAvailableServicesByName(), $store.commit('setName', serviceName)">
+          <option disabled selected value="">Please select a service</option>
+          <option v-for="existingServiceName in existingServiceNames" :key="existingServiceName.serviceName">
+            {{ existingServiceName.serviceName }}
+          </option>
+        </select>
       </div>
     </div>
-    <span>{{ name }}</span>
+
+    <span>NAME {{ name }} NAME </span><br />
+    <span>SERVICENAME {{ serviceName }} SERVICENAME </span>
+
+    <!-- <button class="bg-green-400 px-4 py-2 rounded" @click="getAllServices(), $store.commit('setName', serviceName)">Vali teenus</button> -->
   </div>
 </template>
 
 <script>
 import axios from "axios";
-//import Datepicker from "vuejs-datepicker";
-//import DatePicker from "@/components/DatePicer.vue"
-//import DatePicker from './DatePicker.vue';
+import { mapState } from "vuex";
 
 export default {
-  name: "HelloWorld",
-
   data() {
     return {
       apiURL: process.env.VUE_APP_BACKEND_URL,
-      name: [],
-      //date: new Date,
-      existingUserNames: [],
+      serviceName: "",
+      existingServiceNames: [],
     };
   },
 
-  beforeMount() {
-    this.getAllServices();
+  computed: mapState({
+    name: (state) => state.name,
+    nameAlias: "name",
+  }),
+
+  // beforeMount() {
+  //   this.getAllServices();
+  //   //this.$store.state.name;
+  // },
+
+  async created() {
+    await this.getAllServices();
   },
 
   methods: {
     async getAllServices() {
-      //let newName = this.existingUserName.serviceName;
+      let newName = this.name; //store name
       const getAll = await axios({
         url: `${this.apiURL}api/serviceName`,
         method: "GET",
       });
-      this.existingUserNames = getAll.data.allNames;
+      this.existingServiceNames = getAll.data.allNames;
       //this.$emit('helloWorld', {serviceName: newName})
+      console.log(newName);
     },
-    
   },
+
+//--------------------------------------FN----------
+  //  async getAvailableServicesByName() {
+  
+  //   },
+
+//--------------------------------------FN----------
+
+
 };
 </script>
 

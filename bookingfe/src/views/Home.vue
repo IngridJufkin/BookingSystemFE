@@ -7,8 +7,8 @@
           <HelloWorld />
           <DatePicker />
         </div>
-
-         <hello-world class="my-3" @service-name="getAvailableServicesByName" />
+      
+        <!-- <hello-world class="my-3" @service-name="getAvailableServicesByName" /> -->
       </div>
     </div>
   </div>
@@ -21,7 +21,6 @@ import HelloWorld2 from "@/components/HelloWorld2.vue";
 import DatePicker from "../components/DatePicker.vue";
 //import axios from "axios";
 
-
 export default {
   name: "Home",
   components: {
@@ -30,35 +29,26 @@ export default {
     HelloWorld2,
   },
 
-  methods: 
-    {
-  //   async addBooking() {
-  //     //let newDate = this.form.Date;
-  //     //this.serviceName = newName;
-  //     await axios({
-   
-  //       url: `${this.apiURL}api/createTask`,
-  //       method: "POST",
-  //       data: this.data,
-  //     })
-  //   }
- // }
-//};
+  methods: {
 
-//  async getAvailableServicesByName() {
-//       let nameInput =  this.existingUserName.serviceName;
-//       const getTasksName = await axios({
-//         url: `${this.apiURL}api/serviceName/${nameInput}`, //get tasks By Name
-//         method: "GET",
-//       });
-//       // eslint-disable-next-line no-console
-//       console.log("GetTasksByName" + getTasksName)
-//       this.isHidden = true;
-//       this.existingUserNames = getAll.data.allNames;
-//     }
-   
-  }
-}
+//--------------------------------------FN----------
+  //   async getAvailableServicesByName() {
+  //     let storeName = this.$store.state.name;
+  //     let storeDate = this.$store.state.date;
+  //     const getTasksName = await axios({
+  //       //http://localhost:3001/API/serviceOrder/2021-05-07/Massage/0
+  //       url: `${this.apiURL}api/serviceOrder/${storeDate}/${storeName}/0`, //get tasks By Name
+  //       method: "GET",
+  //     });
+  //     // eslint-disable-next-line no-console
+  //    console.log("storeName:" + storeName)
+  //     this.isHidden = true;
+  //     this.existingUserNames = getTasksName.data.allNames;
+  //   },
+  },
+
+  //--------------------------------------FN----------
+};
 </script>
 
 <style scoped lang="scss">
