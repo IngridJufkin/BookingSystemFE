@@ -1,8 +1,6 @@
 <template>
   <div class="bg-white shadow rounded px-3 pt-3 pb-5 border border-white">
     <div class="row">
-   
-
       <div class="hello">
         <select v-model="serviceName" class="form-control" @change="getAvailableServicesByName(), $store.commit('setName', serviceName)">
           <option disabled selected value="">Please select a service</option>
@@ -30,6 +28,12 @@ export default {
       apiURL: process.env.VUE_APP_BACKEND_URL,
       serviceName: "",
       existingServiceNames: [],
+      columns: [
+        {
+          title: "Available Service Times",
+          serviceTimes: [],
+        },
+      ],
     };
   },
 
@@ -56,18 +60,27 @@ export default {
       });
       this.existingServiceNames = getAll.data.allNames;
       //this.$emit('helloWorld', {serviceName: newName})
-      console.log(newName);
+      console.log("GETALLSERVICES HELLOWORDIS: " + newName);
+    },
+
+    //--------------------------------------FN----------
+   getAvailableServicesByName() {
+      // let storeName = this.$store.state.name;
+      // let storeDate = this.$store.state.date;
+      // const getOrdersByDate= await axios({
+      //   //http://localhost:3001/API/serviceOrder/2021-05-07/Massage/0
+      //   url: `${this.apiURL}api/serviceOrder/${storeDate}/${storeName}/0`, //get tasks By Name
+      //   method: "GET",
+      // });
+      // // eslint-disable-next-line no-console
+      // console.log("storeName:" + storeName);
+      // this.existingUserNames = getOrdersByDate.data.result;
+
+      this.$emit("get-available");
     },
   },
-
-//--------------------------------------FN----------
-  //  async getAvailableServicesByName() {
-  
-  //   },
-
-//--------------------------------------FN----------
-
-
+  // },
+  //--------------------------------------FN----------
 };
 </script>
 
