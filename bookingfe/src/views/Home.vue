@@ -1,56 +1,117 @@
 <template>
-  <div class="bg-white shadow rounded px-3 pt-3 pb-5 border border-white">
-    <div class="row">
-      <HelloWorld2 msg="We welcome you in our booking system!" />
+  <div>
+    <message msg="Welcome to here!" />
+    <ul>
+      <li>
+        <date-picker @date-added="getAllFreeServices($event)" />
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <hello-world @name-added="getAllFreeServices($event)" />
+      </li>
+      <ul>
+        <li>
+          <p
+            class="text-gray-700 font-semibold font-sans tracking-wide text-sm"
+          >
+            {{ $moment(serviceDate).format("DD.MM.YYYY") }} {{ name }}
+          </p>
+        </li>
+      </ul>
 
-      <div class="col">
-        <div class="hello">
-          <HelloWorld />
-          <DatePicker />
-        </div>
-        <!-- <hello-world class="my-3" @service-name="getAvailableServicesByName" /> -->
-      </div>
-    </div>
+    <ul>
+        <li>
+          <div
+            v-for="freeServiceTime in freeServiceTimes"
+            :key="freeServiceTime.id" >
+            {{ freeServiceTime.serviceTime }}
+            <button>Book</button>
+            <p></p>
+          </div>
+        </li>
+      </ul>
+    </ul>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import axios from "axios";
 import HelloWorld from "@/components/HelloWorld.vue";
-import HelloWorld2 from "@/components/HelloWorld2.vue";
-import DatePicker from "../components/DatePicker.vue";
-//import axios from "axios";
-
+import DatePicker from "@/components/DatePicker.vue";
+import Message from "@/components/Message.vue";
+import { mapState } from "vuex";
+import moment from "moment";
 export default {
   name: "Home",
   components: {
     HelloWorld,
     DatePicker,
-    HelloWorld2,
+    Message,
   },
-
-  // methods: {
-  //   //--------------------------------------FN----------
-  //   async getAvailableServicesByName() {
-  //     let storeName = this.$store.state.name;
-  //     let storeDate = this.$store.state.date;
-  //     const getTasksName = await axios({
-  //       //http://localhost:3001/API/serviceOrder/2021-05-07/Massage/0
-  //       url: `${this.apiURL}api/serviceOrder/${storeDate}/${storeName}/0`, //get tasks By Name
-  //       method: "GET",
-  //     });
-  //     // eslint-disable-next-line no-console
-  //     console.log("storeName:" + storeName);
-  //     this.isHidden = true;
-  //     this.existingUserNames = getTasksName.data.allNames;
-  //   },
-  // },
-
-  // //--------------------------------------FN----------
+  data() {
+    return {
+      apiURL: process.env.VUE_APP_BACKEND_URL,
+      serviceName: "",
+      existingServiceNames: [],
+      freeServiceTimes: [],
+    };
+  },
+  computed: mapState({
+    name: (state) => state.name,
+    nameAlias: "name",
+    serviceDate: (state) => state.date,
+    dateAlias: "serviceDate",
+  }),
+  async created() {
+    await this.getAllDistinctServices();
+  },
+  methods: {
+    async getAllDistinctServices() {
+      console.log("Home getAllDistinctServices funktsioon algas");
+      const getAll = await axios({
+        url: "http://localhost:3001/api/serviceName",
+        method: "GET",
+      });
+      this.existingServiceNames = getAll.data;
+    },
+    async getAllFreeServices() {
+      console.log("Home getAllFreeServices funktsioon algas");
+      let storeName = this.$store.state.name;
+      console.log("Home " + storeName);
+      let storeDate = moment(this.$store.state.date).format("YYYY-MM-DD");
+      console.log("Home storeDate" + storeDate);
+      const getAll = await axios({
+        url: `http://localhost:3001/api/serviceOrder/${storeDate}/${storeName}/0`,
+        method: "GET",
+      });
+      const FreeTimes = getAll.data.getOrdersByDate;
+      this.freeServiceTimes = FreeTimes;
+      console.log("Home LIST " + FreeTimes);
+    },
+    async addName() {
+      this.$emit("name-added", {
+        userName: this.userName,
+      });
+    },
+  },
 };
 </script>
-
-<style scoped lang="scss">
+<style scoped>
+.home {
+  width: 800px;
+  margin: 1em auto;
+}
+.column-width {
+  min-width: 320px;
+  width: 320px;
+}
+.ghost-card {
+  opacity: 0.5;
+  background: #f7fafc;
+  border: 1px solid #4299e1;
+}
 h3 {
   margin: 40px 0 0;
 }
@@ -61,18 +122,5 @@ ul {
 li {
   display: inline-block;
   margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-
-.border-gray {
-  border-bottom: 1px solid rgba(55, 65, 81, 0.3);
-  border-radius: 0;
-}
-.hello {
-  margin: 40px;
-  justify-content: center;
-  display: flex;
 }
 </style>
