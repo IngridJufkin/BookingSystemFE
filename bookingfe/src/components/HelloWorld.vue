@@ -35,7 +35,7 @@ export default {
   },
   computed: mapState({
     name: (state) => state.name,
-    nameAlias: "name",
+    nameAlias: "name", 
   }),
   async created() {
     await this.getAllDistinctServices();
