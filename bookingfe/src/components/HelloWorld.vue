@@ -14,6 +14,7 @@
           <option
             v-for="existingServiceName in existingServiceNames"
             :key="existingServiceName.serviceName"
+            :value="existingServiceName.serviceName"
           >
             {{ existingServiceName.serviceName }}
           </option>

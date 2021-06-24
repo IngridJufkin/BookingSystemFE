@@ -3,34 +3,43 @@
     <message msg="Welcome to here!" />
     <ul>
       <li>
-        <date-picker @date-added="getAllFreeServices($event)" />
+        <date-picker v-if="!isHidden" @date-added="getAllFreeServices($event)" />
       </li>
     </ul>
     <ul>
       <li>
-        <hello-world @name-added="getAllFreeServices($event)" />
+        <hello-world v-if="!isHidden" @name-added="getAllFreeServices($event)" />
       </li>
       <ul>
         <li>
           <p
             class="text-gray-700 font-semibold font-sans tracking-wide text-sm"
           >
-            {{ $moment(serviceDate).format("DD.MM.YYYY") }} {{ name }}
+            <!-- {{ $moment(serviceDate).format("DD.MM.YYYY") }} {{ name }} -->
           </p>
         </li>
       </ul>
 
-    <ul>
+    <ul v-if="!isHidden">
         <li>
           <div
             v-for="freeServiceTime in freeServiceTimes"
             :key="freeServiceTime.id" >
             {{ freeServiceTime.serviceTime }}
-            <button>Book</button>
+               {{ freeServiceTime._id}}
+                 {{ freeServiceTime.status}}
+            <button class="add-todo bg-green-400 px-4 py-2 rounded" @click="bookService(freeServiceTime._id, freeServiceTime.status, freeServiceTime.serviceTime, freeServiceTime.serviceName, serviceDate)">
+            Book
+            </button>
             <p></p>
           </div>
         </li>
       </ul>
+      <div v-if="isHidden"> {{infoText}}</div><br>
+
+      <button v-if="isHidden" class="add-todo bg-green-400 px-4 py-2 rounded" @click="bookNewTime(), getAllFreeServices()">
+        Book a new time
+        </button>
     </ul>
   </div>
 </template>
@@ -41,6 +50,7 @@ import axios from "axios";
 import HelloWorld from "@/components/HelloWorld.vue";
 import DatePicker from "@/components/DatePicker.vue";
 import Message from "@/components/Message.vue";
+//import Modal from "@/components/Modal.vue";
 import { mapState } from "vuex";
 import moment from "moment";
 export default {
@@ -49,6 +59,7 @@ export default {
     HelloWorld,
     DatePicker,
     Message,
+   //Modal
   },
   data() {
     return {
@@ -56,6 +67,8 @@ export default {
       serviceName: "",
       existingServiceNames: [],
       freeServiceTimes: [],
+      isHidden: false,
+      infoText: "",
     };
   },
   computed: mapState({
@@ -76,6 +89,32 @@ export default {
       });
       this.existingServiceNames = getAll.data;
     },
+
+
+    async bookService(freeServideId, status, serviceTime, serviceName, serviceDate) {
+    let serviceID = freeServideId;
+    console.log("ID: "  + serviceID);
+    console.log("Status: "  + status);
+    let statusBooked = 1;
+    console.log("statusBooked " + statusBooked)
+    status = statusBooked
+    console.log("STATUS = STATUSBOOKED " + status)
+    this.status = status
+    console.log("this.status " + this.status)
+    let formatedServiceDate =   moment(serviceDate).format("DD.MM.YYYY")
+    const body = { 
+    body: {status: 1},
+    }
+    axios({
+        url: `http://localhost:3001/API/serviceOrder/${serviceID}`, 
+        body: {body},
+        method: "PATCH",
+        data: this.status
+      });
+      this.isHidden = true,
+      this.infoText = `You have booked a time for ${serviceName}. We are waiting you ${formatedServiceDate} at ${serviceTime}`
+     },
+
     async getAllFreeServices() {
       console.log("Home getAllFreeServices funktsioon algas");
       let storeName = this.$store.state.name;
@@ -89,13 +128,23 @@ export default {
       const FreeTimes = getAll.data.getOrdersByDate;
       this.freeServiceTimes = FreeTimes;
       console.log("Home LIST " + FreeTimes);
+      this.isHidden = false
+
     },
+
+     bookNewTime() {
+    this.isHidden = false
+    this.$store.state.name = "Manicure"
+    this.$store.state.date = new Date()
+    },
+
     async addName() {
       this.$emit("name-added", {
         userName: this.userName,
       });
     },
-  },
+
+  }
 };
 </script>
 <style scoped>
