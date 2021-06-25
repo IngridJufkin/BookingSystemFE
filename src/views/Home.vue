@@ -1,4 +1,5 @@
 <template>
+<div class="container">
   <div>
     <message v-if="!isHidden" msg="You are welcome to book a service !" />
     <ul>
@@ -41,7 +42,6 @@
             {{ freeServiceTime.status }}
 
             <button
-              class="add-todo bg-green-400 px-4 py-2 rounded"
               @click="
                 chooseService(
                   freeServiceTime._id,
@@ -57,7 +57,6 @@
 
             <button
               v-if="!isHidden"
-              class="add-todo bg-green-400 px-4 py-2 rounded"
               @click="
                 bookService(
                   freeServiceTime._id,
@@ -81,7 +80,7 @@
       
        <button
         v-if="isHidden"
-        class="add-todo bg-green-400 px-4 py-2 rounded"
+        class="bg-green-400 px-4 py-2 rounded"
         @click="bookService(freeServiceTime._id,freeServiceTime.status,freeServiceTime.serviceTime,freeServiceTime.serviceName,serviceDate)">
         Book NOW
       </button>
@@ -94,6 +93,7 @@
         Book a new time
       </button>
     </ul>
+  </div>
   </div>
 </template>
 
@@ -243,4 +243,24 @@ li {
   display: inline-block;
   margin: 0 10px;
 }
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.container {
+  display: block;
+  margin:auto;
+  text-align: center;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+  width: 50%;
+}
+
 </style>

@@ -10,7 +10,7 @@
             addName();
           "
         >
-          <option disabled selected value="">Please select a service</option>
+          <option name="serviceName" disabled selected value="">Please select a service</option>
           <option
             v-for="existingServiceName in existingServiceNames"
             :key="existingServiceName.serviceName"
@@ -64,4 +64,6 @@ export default {
   border-radius: 0;
   height: 300;
 }
+
+
 </style>

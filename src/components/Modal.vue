@@ -1,30 +1,52 @@
 <template>
+<div class="container">
   <form class="contact-form" @submit.prevent="sendEmail">
     <label>Name</label>
-    <input type="text" name="user_name">
+    <input type="text" name="to_name" v-model="serviceName">
+
     <label>Email</label>
-    <input type="email" name="user_email">
+    <input type="email" name="email" >
+
+    <label>Phone</label>
+    <input type="number" name="phone">
+
     <label>Message</label>
-    <textarea name="message"></textarea>
+    <textarea name="message" ></textarea>
+
     <input type="submit" value="Send">
   </form>
+  </div>
 </template>
 
 <script>
 import emailjs from 'emailjs-com';
-
 export default {
-  methods: {
-    sendEmail: (e) => {
-      emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', e.target, 'YOUR_USER_ID')
-        .then((result) => {
-            console.log('SUCCESS!', result.status, result.text);
-        }, (error) => {
-            console.log('FAILED...', error);
-        });
+  name: 'ContactUs',
+  data() {
+    return {
+      to_name: '',
+      email: '',
+      message: '',
+      serviceName: ''
     }
+  },
+  methods: {
+    sendEmail(e) {
+      try {
+        emailjs.sendForm('service_rage1l9', 'template_40xn182', e.target, 'user_UMtJWKlNmcELqEKldoxSS')
+
+      } catch(error) {
+          console.log({error})
+      }
+      // Reset form field
+      this.name = ''
+      this.email = ''
+      this.message = ''
+      this.phone = ''
+    },
   }
 }
+
 </script>
 
 <style scoped>
@@ -44,7 +66,7 @@ label {
   float: left;
 }
 
-input[type=text], [type=email], textarea {
+input[type=text], [type=email],[type=number], textarea {
   width: 100%;
   padding: 12px;
   border: 1px solid #ccc;
