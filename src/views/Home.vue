@@ -46,8 +46,6 @@
             <button
               @click="
                 chooseService(
-                  freeServiceTime._id,
-                  freeServiceTime.status,
                   freeServiceTime.serviceTime,
                   freeServiceTime.serviceName,
                   serviceDate
@@ -57,21 +55,6 @@
             >
               Next to booking
             </button>
-
-            <!-- <button
-              v-if="!isHidden"
-              @click="
-                bookService(
-                  freeServiceTime._id,
-                  freeServiceTime.status,
-                  freeServiceTime.serviceTime,
-                  freeServiceTime.serviceName,
-                  serviceDate
-                )
-              "
-            >
-              Tere
-            </button> -->
 
             <p></p>
           </div>
@@ -187,7 +170,17 @@ export default {
     },
 
     chooseService(serviceTime,serviceName, serviceDate)  {
+        //let serviceID = freeServideId;
+      //console.log("ID: " + serviceID);
+      // console.log("Status: " + status);
+      // let statusBooked = 1;
+      // console.log("statusBooked " + statusBooked);
+      // status = statusBooked;
+      // console.log("STATUS = STATUSBOOKED " + status);
+      // this.status = status;
+      // console.log("this.status " + this.status);
       let formatedServiceDate = moment(serviceDate).format("DD.MM.YYYY");
+    
       (this.isHidden = true),
       (this.infoText = `Your booking: ${serviceName} on ${formatedServiceDate} at ${serviceTime}`);
     },
