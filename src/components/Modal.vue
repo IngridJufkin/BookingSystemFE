@@ -1,8 +1,8 @@
 <template>
 <div class="container">
-  <form class="contact-form" @submit.prevent="sendEmail">
+ <form class="contact-form"  v-if="!isHidden" @submit.prevent="sendEmail" @submit="bookService()">
     <label>Name</label>
-    <input type="text" name="to_name" v-model="serviceName">
+    <input type="text" name="to_name">
 
     <label>Email</label>
     <input type="email" name="email" >
@@ -10,16 +10,30 @@
     <label>Phone</label>
     <input type="number" name="phone">
 
+    <label>Booked service</label>
+    <input type="text" name="serviceName" v-model="serviceName" readonly>
+   
+    <label>Service Date</label>
+    <input type="text" name="serviceDate" v-model="serviceDate" readonly>
+   
+    <label>Service time</label>
+    <input type="text" name="serviceTime" v-model="serviceTime" readonly>
+   
+
     <label>Message</label>
     <textarea name="message" ></textarea>
 
-    <input type="submit" value="Send">
+    <input type="submit" value="Book">
+
   </form>
+
   </div>
 </template>
 
 <script>
 import emailjs from 'emailjs-com';
+import axios from "axios";
+
 export default {
   name: 'ContactUs',
   data() {
@@ -27,22 +41,36 @@ export default {
       to_name: '',
       email: '',
       message: '',
-      serviceName: ''
+      serviceName: this.$store.state.name,
+      serviceDate: this.$store.state.date,
+      serviceTime: this.$store.state.time,
+      isHidden: false,
     }
   },
   methods: {
-    sendEmail(e) {
+   sendEmail(e) {
       try {
         emailjs.sendForm('service_rage1l9', 'template_40xn182', e.target, 'user_UMtJWKlNmcELqEKldoxSS')
-
       } catch(error) {
           console.log({error})
       }
       // Reset form field
-      this.name = ''
+      this.to_name = ''
       this.email = ''
       this.message = ''
       this.phone = ''
+      this.name = ''
+    },
+
+
+    bookService() {
+      axios({
+        url: `http://localhost:3001/API/serviceOrder/${this.$store.state.id}`,
+        method: "PATCH",
+        data: this.status,
+      });
+      (this.isHidden = true)
+      //(this.infoText = `You have booked a time for ${serviceName}. We are waiting you ${formatedServiceDate} at ${serviceTime}`);
     },
   }
 }
@@ -54,7 +82,7 @@ export default {
 
 .container {
   display: block;
-  margin:auto;
+  margin: 0;
   text-align: center;
   border-radius: 5px;
   background-color: #f2f2f2;

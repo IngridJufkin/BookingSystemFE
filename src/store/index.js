@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     name: "",
     date: new Date(),
-    id: ""
+    id: "",
+    time: ""
   },
   mutations: {
     setName(state, payload  ) {
@@ -18,6 +19,9 @@ export default new Vuex.Store({
     },
     setID(state, newPayload ) {
       state.id = newPayload;
+    },
+    setTime(state, newPayload ) {
+      state.time = newPayload;
     },
   },
   actions: {},

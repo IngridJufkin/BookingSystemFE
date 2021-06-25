@@ -2,6 +2,8 @@
 <div class="container">
   <div>
     <message v-if="!isHidden" msg="You are welcome to book a service !" />
+       <div v-if="isHidden">{{ infoText }}</div>
+       
     <ul>
       <li>
         <modal v-if="isHidden" />
@@ -49,13 +51,14 @@
                   freeServiceTime.serviceTime,
                   freeServiceTime.serviceName,
                   serviceDate
-                ); $store.commit('setID', serviceID)
+                ); $store.commit('setID', freeServiceTime._id);
+                $store.commit('setTime',  freeServiceTime.serviceTime)
               "
             >
-              Save service and time
+              Next to booking
             </button>
 
-            <button
+            <!-- <button
               v-if="!isHidden"
               @click="
                 bookService(
@@ -68,30 +71,23 @@
               "
             >
               Tere
-            </button>
+            </button> -->
 
             <p></p>
           </div>
         </li>
       </ul>
-
-      <div v-if="isHidden">{{ infoText }}</div>
-      <br />
-      
-       <button
-        v-if="isHidden"
-        class="bg-green-400 px-4 py-2 rounded"
-        @click="bookService(freeServiceTime._id,freeServiceTime.status,freeServiceTime.serviceTime,freeServiceTime.serviceName,serviceDate)">
-        Book NOW
-      </button>
       
       <button
         v-if="isHidden"
         class="add-todo bg-green-400 px-4 py-2 rounded"
         @click="bookNewTime(), getAllFreeServices()"
       >
-        Book a new time
+        Book more services or change selected time
       </button>
+
+  
+      <br />
     </ul>
   </div>
   </div>
@@ -133,6 +129,8 @@ export default {
     dateAlias: "serviceDate",
     serviceID: (state) => state.id,
     IDAlias: "serviceID",
+    serviceTime: (state) => state.time,
+    timeAlias: "serviceTime",
   }),
   async created() {
     await this.getAllDistinctServices();
@@ -147,29 +145,29 @@ export default {
       this.existingServiceNames = getAll.data;
     },
 
-    async bookService(freeServideId,status,serviceTime,serviceName, serviceDate) {
-      console.log("OLEN SIIN")
-      let serviceID = freeServideId;
-      console.log("ID: " + serviceID);
-      console.log("Status: " + status);
-      let statusBooked = 1;
-      console.log("statusBooked " + statusBooked);
-      status = statusBooked;
-      console.log("STATUS = STATUSBOOKED " + status);
-      this.status = status;
-      console.log("this.status " + this.status);
-      let formatedServiceDate = moment(serviceDate).format("DD.MM.YYYY");
+    async bookService() {
+      // console.log("OLEN SIIN")
+      // let serviceID = freeServideId;
+      // console.log("ID: " + serviceID);
+      // console.log("Status: " + status);
+      // let statusBooked = 1;
+      // console.log("statusBooked " + statusBooked);
+      // status = statusBooked;
+      // console.log("STATUS = STATUSBOOKED " + status);
+      // this.status = status;
+      // console.log("this.status " + this.status);
+      //let formatedServiceDate = moment(serviceDate).format("DD.MM.YYYY");
       const body = {
         body: { status: 1 },
       };
       axios({
-        url: `http://localhost:3001/API/serviceOrder/${serviceID}`,
+        url: `http://localhost:3001/API/serviceOrder/${this.$store.state.id}`,
         body: { body },
         method: "PATCH",
         data: this.status,
       });
-      (this.isHidden = true),
-        (this.infoText = `You have booked a time for ${serviceName}. We are waiting you ${formatedServiceDate} at ${serviceTime}`);
+      (this.isHidden = true)
+       // (this.infoText = `You have booked a time for ${serviceName}. We are waiting you ${formatedServiceDate} at ${serviceTime}`);
     },
 
     async getAllFreeServices() {
@@ -188,20 +186,20 @@ export default {
       this.isHidden = false;
     },
 
-    chooseService(freeServideId,status,serviceTime,serviceName, serviceDate)  {
-        let serviceID = freeServideId;
-      console.log("ID: " + serviceID);
-      console.log("Status: " + status);
-      let statusBooked = 1;
-      console.log("statusBooked " + statusBooked);
-      status = statusBooked;
-      console.log("STATUS = STATUSBOOKED " + status);
-      this.status = status;
-      console.log("this.status " + this.status);
+    chooseService(serviceTime,serviceName, serviceDate)  {
+        //let serviceID = freeServideId;
+      //console.log("ID: " + serviceID);
+      // console.log("Status: " + status);
+      // let statusBooked = 1;
+      // console.log("statusBooked " + statusBooked);
+      // status = statusBooked;
+      // console.log("STATUS = STATUSBOOKED " + status);
+      // this.status = status;
+      // console.log("this.status " + this.status);
       let formatedServiceDate = moment(serviceDate).format("DD.MM.YYYY");
     
-       (this.isHidden = true),
-      (this.infoText = `You chose a booking for ${serviceName} on ${formatedServiceDate} at ${serviceTime}`);
+      (this.isHidden = true),
+      (this.infoText = `Your booking: ${serviceName} on ${formatedServiceDate} at ${serviceTime}`);
     },
 
     bookNewTime() {
