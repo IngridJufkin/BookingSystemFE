@@ -114,19 +114,9 @@ export default {
     serviceTime: (state) => state.time,
     timeAlias: "serviceTime",
   }),
-  async created() {
-    await this.getAllDistinctServices();
-  },
+
   methods: {
-    async getAllDistinctServices() {
-      console.log("Home getAllDistinctServices funktsioon algas");
-      const getAll = await axios({
-        url: `${this.apiURL}api/serviceName`,
-        //url: "http://localhost:3001/api/serviceName",
-        method: "GET",
-      });
-      this.existingServiceNames = getAll.data;
-    },
+
 
     async bookService() {
       // console.log("OLEN SIIN")
