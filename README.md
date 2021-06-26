@@ -1,5 +1,8 @@
 # bookingfe
 
+## DEMO - Hosted in Netlify
+https://servicebooking.netlify.app/
+
 ## Project setup
 ```
 npm install
