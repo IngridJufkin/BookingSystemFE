@@ -50,9 +50,7 @@
                   freeServiceTime.serviceName,
                   serviceDate
                 ); $store.commit('setID', freeServiceTime._id);
-                $store.commit('setTime',  freeServiceTime.serviceTime)
-              "
-            >
+                $store.commit('setTime',  freeServiceTime.serviceTime)">
               Next to booking
             </button>
 
