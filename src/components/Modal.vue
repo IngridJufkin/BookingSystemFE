@@ -38,6 +38,7 @@ export default {
   name: 'ContactUs',
   data() {
     return {
+      apiURL: process.env.VUE_APP_BACKEND_URL,
       to_name: '',
       email: '',
       message: '',
