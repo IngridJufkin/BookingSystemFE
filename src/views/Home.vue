@@ -40,8 +40,7 @@
             :key="freeServiceTime.id"
           >
             {{ freeServiceTime.serviceTime }}
-            {{ freeServiceTime._id }}
-            {{ freeServiceTime.status }}
+            
 
             <button
               @click="
