@@ -44,8 +44,8 @@ export default {
   methods: {
     async getAllDistinctServices() {
       const getAll = await axios({
-        // url: `${this.apiURL}api/serviceName`,
-        url: "http://localhost:3001/api/serviceName",
+        url: `${this.apiURL}api/serviceName`,
+        //url: "http://localhost:3001/api/serviceName",
         method: "GET",
       });
       this.existingServiceNames = getAll.data.allNames;
