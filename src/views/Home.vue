@@ -121,7 +121,8 @@ export default {
     async getAllDistinctServices() {
       console.log("Home getAllDistinctServices funktsioon algas");
       const getAll = await axios({
-        url: "http://localhost:3001/api/serviceName",
+        url: `${this.apiURL}api/serviceName`,
+        //url: "http://localhost:3001/api/serviceName",
         method: "GET",
       });
       this.existingServiceNames = getAll.data;
@@ -143,7 +144,8 @@ export default {
         body: { status: 1 },
       };
       axios({
-        url: `http://localhost:3001/API/serviceOrder/${this.$store.state.id}`,
+        url: `${this.apiURL}api/serviceOrder/${this.$store.state.id}`,
+        //url: `http://localhost:3001/API/serviceOrder/${this.$store.state.id}`,
         body: { body },
         method: "PATCH",
         data: this.status,
@@ -159,7 +161,8 @@ export default {
       let storeDate = moment(this.$store.state.date).format("YYYY-MM-DD");
       console.log("Home storeDate" + storeDate);
       const getAll = await axios({
-        url: `http://localhost:3001/api/serviceOrder/${storeDate}/${storeName}/0`,
+        url: `${this.apiURL}api/serviceOrder/${storeDate}/${storeName}/0`,
+        //url: `http://localhost:3001/api/serviceOrder/${storeDate}/${storeName}/0`,
         method: "GET",
       });
       const FreeTimes = getAll.data.getOrdersByDate;

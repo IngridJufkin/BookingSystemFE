@@ -65,7 +65,8 @@ export default {
 
     bookService() {
       axios({
-        url: `http://localhost:3001/API/serviceOrder/${this.$store.state.id}`,
+        url: `${this.apiURL}api/serviceOrder/${this.$store.state.id}`,
+        //url: `http://localhost:3001/API/serviceOrder/${this.$store.state.id}`,
         method: "PATCH",
         data: this.status,
       });
