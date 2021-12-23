@@ -33,6 +33,7 @@
 <script>
 import emailjs from 'emailjs-com';
 import axios from "axios";
+import dayjs from 'dayjs';
 
 export default {
   name: 'ContactUs',
@@ -43,7 +44,7 @@ export default {
       email: '',
       message: '',
       serviceName: this.$store.state.name,
-      serviceDate: this.$store.state.date,
+      serviceDate: dayjs(this.$store.state.date).format('DD.MM.YYYY'), 
       serviceTime: this.$store.state.time,
       isHidden: false,
     }

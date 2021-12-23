@@ -4,6 +4,7 @@
       :inline="true"
       placeholder="Select Date"
       v-model="date"
+      :disabledDates="disabledDates"
       @input="
         $store.commit('setDate', date);
         addDate();
@@ -14,11 +15,15 @@
 <script>
 import Datepicker from "vuejs-datepicker";
 import { mapState } from "vuex";
+
 export default {
   data() {
     return {
       apiURL: process.env.VUE_APP_BACKEND_URL,
       date: new Date(),
+      disabledDates: {
+          to: new Date(Date.now() - 8640000)
+        }
     };
   },
   components: {
